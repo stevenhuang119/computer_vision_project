@@ -90,6 +90,8 @@ class Detector:
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
         cv2.imwrite('./converted.png', img)
         for i in range(len(boxes)):
+            if labels[i] is not 'person':
+                continue
             cv2.rectangle(img,
                           (int(boxes[i][0]), int(boxes[i][1])),
                           (int(boxes[i][2]), int(boxes[i][3])),
