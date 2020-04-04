@@ -57,10 +57,11 @@ class Detector:
         # obtain the images
         img = Image.open(img_path) 
         img = img_transformation(img)
-
+        img = img[:3,:,:]
+        
         # run the image through the RCNN model
         print('----model predicting----')
-        pred = self.model([img]) # only passing one image in for testing
+        pred = self.model([img[:3,:,:]]) # only passing one image in for testing
         print('----prediction finishes---')
         pred_labels = [self.CATEGORY_NAMES[i] for i in list(
             pred[0]['labels'].numpy()
@@ -86,9 +87,9 @@ class Detector:
         """
         boxes, labels = self.make_predictions(img_path, threshold)
         img = cv2.imread(img_path)
-        cv2.imwrite('./justuploaded.png', img)
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
-        cv2.imwrite('./converted.png', img)
+        cv2.imwrite('./test_iamges/justuploaded.png', img)
+        #img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
+        #cv2.imwrite('./test_images/converted.png', img)
         for i in range(len(boxes)):
             if labels[i] is not 'person':
                 continue
@@ -105,14 +106,14 @@ class Detector:
         # plt.imshow(img)
         # plt.xticks([])
         # plt.yticks([])
-        cv2.imwrite('./result.png', img)
+        cv2.imwrite('./test_images/church_result.png', img)
 
 
 
 def main():
     detector = Detector()
-    detector.object_detection_pipeline('./girl_cars.jpg', rect_th=15, text_th=7,
-                                       text_size=5, threshold=0.9)
+    detector.object_detection_pipeline('./church.jpg', rect_th=3, text_th=2,
+                                       text_size=2, threshold=0.9)
 
 
 
